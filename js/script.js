@@ -44,7 +44,7 @@ const inputCheck = function (input) {
 
 const makeGuess = function (letter) {
     letter = letter.toUpperCase();
-    if (guessedLetters.includes(guess)){
+    if (guessedLetters.includes(letter)){
         guessMessage.innerText = `You've already guessed that, please guess again.`
     } else {
         guessedLetters.push(letter);
