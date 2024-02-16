@@ -1,4 +1,4 @@
-const guessedLettersDisplay = document.querySelector(`.guessed-letters`); // unordered list for player guesses
+const guessList = document.querySelector(`.guessed-letters`); // unordered list for player guesses
 const button = document.querySelector('button'); // "Guess!" button
 const guess = document.querySelector('input'); // letter input
 const wordInProgress = document.querySelector(".word-in-progress"); // word in progress paragraph
@@ -39,15 +39,49 @@ const inputCheck = function (input) {
     } else if (!input.match(acceptedLetter)) {
         guessMessage.innerText = `Please enter a letter from A to Z.`
     } else
-    return input
+        return input
 }
 
 const makeGuess = function (letter) {
     letter = letter.toUpperCase();
-    if (guessedLetters.includes(letter)){
+    if (guessedLetters.includes(letter)) {
         guessMessage.innerText = `You've already guessed that, please guess again.`
     } else {
         guessedLetters.push(letter);
         console.log(guessedLetters);
+        fillGuessList(letter);
+        wordUpdate(guessedLetters);
+    }
+}
+
+const fillGuessList = function () {
+    guessList.innerHTML = ``;
+    for (const letter of guessedLetters) {
+        let li = document.createElement("li");
+        li = letter + " ";
+        guessList.append(li);
+    }
+}
+
+const wordUpdate = function (guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const revealWord = []
+    //console.log(wordArray);
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+        } else {
+            revealWord.push("●");
+        }
+    }
+    wordInProgress.innerText = revealWord.join("");
+    checkWin(wordInProgress);
+}
+
+const checkWin = function (wordInProgress){
+    if (wordInProgress.innerText === word.toUpperCase()){
+        guessMessage.classList.add("win");
+        guessMessage.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`
     }
 }
